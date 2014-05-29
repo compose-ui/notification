@@ -1,0 +1,21 @@
+{
+  "name": "notification",
+  "version": "0.0.1",
+  "repo": "component-ui/notification",
+  "dependencies": {
+    "compose-ui/flux-dispatcher": "*"
+  },
+  "scripts": [
+    "index.js",
+    "lib/polymer-platform.js",
+    "lib/notification-dispatcher.js",
+    "lib/notification-store.js"
+  ],
+  "main": "index.js",
+  "templates": [
+    "index.html"
+  ],
+  "development": {
+    "chaijs/chai": "*"
+  }
+}

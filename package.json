@@ -1,0 +1,36 @@
+{
+  "name": "compose-notification",
+  "version": "0.0.0",
+  "description": "Notification dispatch and presentation",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha-phantomjs test/index.html",
+    "pretest": "./node_modules/.bin/component install --dev && ./node_modules/.bin/component build --dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/compose-ui/notification.git"
+  },
+  "keywords": [
+    "notification",
+    "notifications",
+    "compose",
+    "browserify"
+  ],
+  "author": "taterbase",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/compose-ui/notification/issues"
+  },
+  "homepage": "https://github.com/compose-ui/notification",
+  "dependencies": {
+    "compose-flux-dispatcher": "0.0.1",
+    "component": "^0.19.9"
+  },
+  "devDependencies": {
+    "mocha": "^1.20.0",
+    "should": "^3.3.2",
+    "phantomjs": "^1.9.7-8",
+    "mocha-phantomjs": "^3.4.1"
+  }
+}
