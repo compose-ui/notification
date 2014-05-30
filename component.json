@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "repo": "component-ui/notification",
   "dependencies": {
-    "compose-ui/flux-dispatcher": "*"
+    "compose-ui/flux-dispatcher": "*",
+    "component/domify": "*"
   },
   "scripts": [
     "index.js",
-    "lib/polymer-platform.js",
     "lib/notification-dispatcher.js",
     "lib/notification-store.js"
   ],
@@ -16,6 +16,7 @@
     "index.html"
   ],
   "development": {
-    "chaijs/chai": "*"
+    "chaijs/chai": "*",
+    "gamtiq/es5-micro-shim": "*"
   }
 }
