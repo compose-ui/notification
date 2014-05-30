@@ -1,63 +1,62 @@
-require('./lib/polymer-platform.js')
-
-var NotificationPrototype = Object.create(HTMLElement.prototype)
+var domify = require('domify')
   , tpl = require('./index.html')
+  , el
+  , notificationMessage
   , NotificationStore = require('./lib/notification-store')
-  , dispatcher = require('./lib/notification-dispatcher')
   , store = new NotificationStore()
+  , dispatcher = require('./lib/notification-dispatcher')
+  , displayTimeout = null
 
 module.exports = {
   notify: notify
 }
 
+//Register Notification Store with our Notification Dispatcher
 dispatcher.register(store.createNotification.bind(store))
 
-NotificationPrototype.createdCallback = function() {
-  this.innerHTML = tpl
-  this.notificationContainer = this.querySelector('.notification')
-  this.notificationMessage = this.querySelector('.notification-message')
-  this.notificationQueue = []
+//Kick off notification listening
+fetchNotification()
 
-  this.querySelector('a.notification-close')
-      .addEventListener('click', this.dismiss.bind(this))
+function dismiss() {
+  clearTimeout(displayTimeout)
 
-  this.fetchNotification()
-}
+  el.classList.remove('error')
+  el.classList.remove('success')
+  el.classList.remove('progress')
+  el.classList.add('hidden')
+  el.setAttribute('aria-hidden', true)
 
-NotificationPrototype.dismiss = function() {
-  clearTimeout(this.displayTimeout)
-
-  this.notificationContainer.classList.remove('error')
-  this.notificationContainer.classList.remove('success') 
-  this.notificationContainer.classList.remove('progress') 
-  this.notificationContainer.classList.add('hidden') 
-  this.notificationContainer.setAttribute('aria-hidden', true)
-
-  this.notificationMessage.innerHTML = ''
+  notificationMessage.innerHTML = ''
 
   //Allow some breathing room in between notifications
-  setTimeout(this.fetchNotification.bind(this), 300)
+  setTimeout(fetchNotification, 300)
 }
 
-NotificationPrototype.fetchNotification = function() {
-  store.getNotification(this.display.bind(this))
+function fetchNotification() {
+  store.getNotification(display)
 }
 
-NotificationPrototype.display = function(notification) {
-  this.notificationMessage.innerHTML = notification.message
+function display(notification) {
+  //Add notification
+  if (!el) {
+    var body = document.querySelector('body')
+    body.insertBefore(domify(tpl), body.firstChild)
+    el = body.querySelector('.notification')
+    el.querySelector('a.notification-close').addEventListener('click', dismiss)
+    notificationMessage = el.querySelector('.notification-message')
+
+  }
+
+  notificationMessage.innerHTML = notification.message
 
   if (notification.type)
-    this.notificationContainer.classList.add(notification.type)
+    el.classList.add(notification.type)
 
-  this.notificationContainer.classList.remove('hidden')
-  this.notificationContainer.setAttribute('aria-hidden', false)
+  el.classList.remove('hidden')
+  el.setAttribute('aria-hidden', false)
 
-  this.displayTimeout = setTimeout(this.dismiss.bind(this), 3000)
+  displayTimeout = setTimeout(dismiss, 3000)
 }
-
-document.registerElement('compose-notification', {
-  prototype: NotificationPrototype
-})
 
 function notify(message, type) {
   dispatcher.createNotification({
