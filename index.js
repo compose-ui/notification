@@ -35,6 +35,7 @@ NotificationPrototype.dismiss = function() {
 
   this.notificationMessage.innerHTML = ''
 
+  //Allow some breathing room in between notifications
   setTimeout(this.fetchNotification.bind(this), 300)
 }
 
