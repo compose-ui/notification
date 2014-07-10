@@ -1,13 +1,12 @@
-//Phantomjs doesn't have bind WTF RAGGGGEEEEEEEEEEE
-require('es5-micro-shim')
-
-var Notification = require('notification')
+var Notification = require('../')
   , assert = require('chai').assert
 
 describe('Compose Notification', function() {
-  this.timeout(4000)
-  it('shows the notification', function(done) {
+  before(function(){
     Notification.notify('sup')
+  })
+  it('shows the notification', function(done) {
+    this.timeout(4000)
     assert.equal(document.querySelector('.notification .notification-message').innerHTML, 'sup')
     var classes = document.querySelector('.notification').classList
 

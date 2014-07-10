@@ -1,11 +1,16 @@
+var fs = require('fs')
+var tpl = fs.readFileSync(__dirname + '/index.html', 'utf8')
+
 var domify = require('domify')
-  , tpl = require('./index.html')
-  , el
-  , notificationMessage
-  , NotificationStore = require('./lib/notification-store')
-  , store = new NotificationStore()
-  , dispatcher = require('./lib/notification-dispatcher')
-  , displayTimeout = null
+var bean = require('bean')
+var classie = require('classie')
+
+var NotificationStore = require('./lib/notification-store')
+var store = new NotificationStore()
+var dispatcher = require('./lib/notification-dispatcher')
+var displayTimeout = null
+
+var el, notificationMessage
 
 module.exports = {
   notify: notify
@@ -20,10 +25,10 @@ fetchNotification()
 function dismiss() {
   clearTimeout(displayTimeout)
 
-  el.classList.remove('error')
-  el.classList.remove('success')
-  el.classList.remove('progress')
-  el.classList.add('hidden')
+  classie.remove(el, 'error')
+  classie.remove(el, 'success')
+  classie.remove(el, 'progress')
+  classie.add(el, 'hidden')
   el.setAttribute('aria-hidden', true)
 
   notificationMessage.innerHTML = ''
@@ -39,20 +44,18 @@ function fetchNotification() {
 function display(notification) {
   //Add notification
   if (!el) {
-    var body = document.querySelector('body')
-    body.insertBefore(domify(tpl), body.firstChild)
-    el = body.querySelector('.notification')
-    el.querySelector('a.notification-close').addEventListener('click', dismiss)
+    document.body.insertBefore(domify(tpl), document.body.firstChild)
+    el = document.querySelector('.notification')
+    bean.on(el.querySelector('a.notification-close'), 'click', dismiss)
     notificationMessage = el.querySelector('.notification-message')
-
   }
 
   notificationMessage.innerHTML = notification.message
 
   if (notification.type)
-    el.classList.add(notification.type)
+    classie.add(el, notification.type)
 
-  el.classList.remove('hidden')
+  classie.remove(el, 'hidden')
   el.setAttribute('aria-hidden', false)
 
   displayTimeout = setTimeout(dismiss, 3000)
