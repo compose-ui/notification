@@ -1,10 +1,10 @@
 {
   "name": "compose-notification",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Notification dispatch and presentation",
   "main": "index.js",
   "scripts": {
-    "test": "mochify"
+    "test": "mochify --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -21,18 +21,16 @@
   "bugs": {
     "url": "https://github.com/compose-ui/notification/issues"
   },
-  "browserify": {
-    "transform": [
-      "brfs"
-    ]
-  },
   "homepage": "https://github.com/compose-ui/notification",
   "dependencies": {
     "bean": "^1.0.14",
-    "brfs": "^1.1.2",
     "classie": "^0.1.0",
-    "compose-flux-dispatcher": "^1.0.0",
-    "domify": "^1.2.2"
+    "compose-tetromino": "^1.0.0",
+    "compose-wagon": "^1.0.1",
+    "debug": "^1.0.4",
+    "domify": "^1.3.0",
+    "lodash": "^2.4.1",
+    "multiline": "^0.3.4"
   },
   "devDependencies": {
     "browserify": "^4.2.0",

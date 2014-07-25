@@ -7,6 +7,6 @@
 ### `notify(message, type)`
 
 ```
-var Notifier = require('compose-notification')
-Notifier.notify('Hello world.', 'info')
+var notify = require('compose-notification')
+notify('Hello world.')
 ```

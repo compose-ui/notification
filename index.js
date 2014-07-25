@@ -1,69 +1,33 @@
-var fs = require('fs')
-var tpl = fs.readFileSync(__dirname + '/index.html', 'utf8')
+var _ = require('lodash')
+var messages = require('./lib/message-collection')
+// var debug = require('debug')('notifications')
 
-var domify = require('domify')
-var bean = require('bean')
-var classie = require('classie')
-
-var NotificationStore = require('./lib/notification-store')
-var store = new NotificationStore()
-var dispatcher = require('./lib/notification-dispatcher')
-var displayTimeout = null
-
-var el, notificationMessage
-
-module.exports = {
-  notify: notify
+var defaultsByType = {
+  error: { keep: true },
+  normal: { dismissAfter: 2.5 },
+  success: { dismissAfter: 2.5 },
+  progress: { safeFor: 1, delay: 500 }
 }
 
-//Register Notification Store with our Notification Dispatcher
-dispatcher.register(store.createNotification.bind(store))
+module.exports = notify
 
-//Kick off notification listening
-fetchNotification()
-
-function dismiss() {
-  clearTimeout(displayTimeout)
-
-  classie.remove(el, 'error')
-  classie.remove(el, 'success')
-  classie.remove(el, 'progress')
-  classie.add(el, 'hidden')
-  el.setAttribute('aria-hidden', true)
-
-  notificationMessage.innerHTML = ''
-
-  //Allow some breathing room in between notifications
-  setTimeout(fetchNotification, 300)
-}
-
-function fetchNotification() {
-  store.getNotification(display)
-}
-
-function display(notification) {
-  //Add notification
-  if (!el) {
-    document.body.insertBefore(domify(tpl), document.body.firstChild)
-    el = document.querySelector('.notification')
-    bean.on(el.querySelector('a.notification-close'), 'click', dismiss)
-    notificationMessage = el.querySelector('.notification-message')
+function notify(type, message){
+  if (!message) {
+    message = type
+    type = 'normal'
   }
 
-  notificationMessage.innerHTML = notification.message
+  var options = _.isString(message)
+    ? {message: message, type: type}
+    : _.merge(message, {type: type})
+  
+  _.defaults(options, defaultsByType[type])
 
-  if (notification.type)
-    classie.add(el, notification.type)
-
-  classie.remove(el, 'hidden')
-  el.setAttribute('aria-hidden', false)
-
-  displayTimeout = setTimeout(dismiss, 3000)
+  return messages.addMessage(options)
 }
 
-function notify(message, type) {
-  dispatcher.createNotification({
-    type: type,
-    message: message
-  })
-}
+notify.normal = notify.bind(null, 'normal')
+notify.success = notify.bind(null, 'success')
+notify.error = notify.bind(null, 'error')
+notify.progress = notify.bind(null, 'progress')
+notify.clear = messages.clear.bind(messages)
