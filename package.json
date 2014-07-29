@@ -1,6 +1,6 @@
 {
   "name": "compose-notification",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Notification dispatch and presentation",
   "main": "index.js",
   "scripts": {
