@@ -1,5 +1,7 @@
 var notify = require('../')
 var assert = require('chai').assert
+var animevent = require('compose-animevent')
+var sinon = require('sinon')
 
 function assertMessage(type, message){
   var el = document.querySelector('.notification.'+type+' .notification-message')
@@ -8,6 +10,12 @@ function assertMessage(type, message){
 }
 
 describe('notify', function() {
+  before(function(){
+    sinon.stub(animevent, 'one', function(el, eventType, callback){
+      // setTimeout(callback, 1)
+      callback()
+    })
+  })
   describe('default', function(){
     before(function(){
       this.msg = notify('hello test world.')
@@ -15,10 +23,7 @@ describe('notify', function() {
     it('shows the notification', function() {
       assertMessage('normal', 'hello test world.')
     })
-    after(function(done){
-      this.msg.dismiss(1)
-      setTimeout(done, 300)
-    })
+    after(clearNotification)
   })
   describe('normal', function(){
     describe('long form', function(){
@@ -28,10 +33,7 @@ describe('notify', function() {
       it('shows the notification', function() {
         assertMessage('normal', 'hello normal test world.')
       })
-      after(function(done){
-        this.msg.dismiss(1)
-        setTimeout(done, 300)
-      })
+      after(clearNotification)
     })
     describe('with helper', function(){
       before(function(){
@@ -40,10 +42,7 @@ describe('notify', function() {
       it('shows the notification', function() {
         assertMessage('normal', 'hello normal 2 test world.')
       })
-      after(function(done){
-        this.msg.dismiss(1)
-        setTimeout(done, 300)
-      })
+      after(clearNotification)
     })
   })
 
@@ -55,10 +54,7 @@ describe('notify', function() {
       it('shows the notification', function() {
         assertMessage('success', 'hello success test world.')
       })
-      after(function(done){
-        this.msg.dismiss(1)
-        setTimeout(done, 300)
-      })
+      after(clearNotification)
     })
     describe('with helper', function(){
       before(function(){
@@ -67,10 +63,7 @@ describe('notify', function() {
       it('shows the notification', function() {
         assertMessage('success', 'hello success 2 test world.')
       })
-      after(function(done){
-        this.msg.dismiss(1)
-        setTimeout(done, 300)
-      })
+      after(clearNotification)
     })
   })
 
@@ -82,10 +75,7 @@ describe('notify', function() {
       it('shows the notification', function() {
         assertMessage('progress', 'hello progress test world.')
       })
-      after(function(done){
-        this.msg.dismiss(1)
-        setTimeout(done, 300)
-      })
+      after(clearNotification)
     })
     describe('with helper', function(){
       before(function(){
@@ -94,10 +84,7 @@ describe('notify', function() {
       it('shows the notification', function() {
         assertMessage('progress', 'hello progress 2 test world.')
       })
-      after(function(done){
-        this.msg.dismiss(1)
-        setTimeout(done, 300)
-      })
+      after(clearNotification)
     })
   })
 
@@ -111,10 +98,7 @@ describe('notify', function() {
     it('has the right options set', function(){
       assert.equal(this.msg.dismissAfter, 2)
     })
-    after(function(done){
-      this.msg.dismiss(1)
-      setTimeout(done, 300)
-    })
+    after(clearNotification)
   })
 
   describe('clear', function(){
@@ -128,3 +112,8 @@ describe('notify', function() {
     })
   })
 })
+
+function clearNotification(done){
+  this.msg.dismiss()
+  setTimeout(done, 300)
+}
