@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.4
+
+- `debug` was causing an issue with an empty message queue
+
 ## 2.0.3
 
 - Added listening on animation event "end" to remove the notification
