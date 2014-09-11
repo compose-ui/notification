@@ -67,22 +67,22 @@ describe('notify', function() {
     })
   })
 
-  describe('progress', function(){
+  describe('action', function(){
     describe('long form', function(){
       before(function(){
-        this.msg = notify('progress', 'hello progress test world.')
+        this.msg = notify('action', 'hello action test world.')
       })
       it('shows the notification', function() {
-        assertMessage('progress', 'hello progress test world.')
+        assertMessage('action', 'hello action test world.')
       })
       after(clearNotification)
     })
     describe('with helper', function(){
       before(function(){
-        this.msg = notify.progress('hello progress 2 test world.')
+        this.msg = notify.action('hello action 2 test world.')
       })
       it('shows the notification', function() {
-        assertMessage('progress', 'hello progress 2 test world.')
+        assertMessage('action', 'hello action 2 test world.')
       })
       after(clearNotification)
     })
@@ -90,10 +90,10 @@ describe('notify', function() {
 
   describe('with options object', function(){
     before(function(){
-      this.msg = notify.progress({message: 'hello progress with options', dismissAfter: 2})
+      this.msg = notify.action({message: 'hello action with options', dismissAfter: 2})
     })
     it('shows the notification', function() {
-      assertMessage('progress', 'hello progress with options')
+      assertMessage('action', 'hello action with options')
     })
     it('has the right options set', function(){
       assert.equal(this.msg.dismissAfter, 2)
@@ -103,7 +103,7 @@ describe('notify', function() {
 
   describe('clear', function(){
     before(function(done){
-      this.msg = notify.progress("test progress")
+      this.msg = notify.action("test action")
       notify.clear()
       this.msg.once('remove', done)
     })

@@ -24,6 +24,6 @@ Uses the specified type of notification.
 notify('Hello world.', 'success')
 ```
 
-### `notify.success`, `notify.error`, `notify.progress`, `notify.normal`
+### `notify.success`, `notify.error`, `notify.action`, `notify.normal`
 
 Helper functions that do exactly what they say they do.

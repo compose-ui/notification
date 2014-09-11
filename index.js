@@ -6,7 +6,7 @@ var defaultsByType = {
   error: { keep: true },
   normal: { dismissAfter: 2.5 },
   success: { dismissAfter: 2.5 },
-  progress: { safeFor: 1, delay: 500 }
+  action: { safeFor: 1, delay: 500 },
 }
 
 module.exports = notify
@@ -15,6 +15,11 @@ function notify(type, message){
   if (!message) {
     message = type
     type = 'normal'
+  }
+
+  // Add an alias for old name.
+  if (type == 'progress') {
+    type = 'action'
   }
 
   var options = _.isString(message)
@@ -29,5 +34,6 @@ function notify(type, message){
 notify.normal = notify.bind(null, 'normal')
 notify.success = notify.bind(null, 'success')
 notify.error = notify.bind(null, 'error')
-notify.progress = notify.bind(null, 'progress')
+notify.action = notify.bind(null, 'action')
+notify.progress = notify.bind(null, 'action')
 notify.clear = messages.clear.bind(messages)
