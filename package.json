@@ -26,16 +26,21 @@
     "url": "https://github.com/compose-ui/notification/issues"
   },
   "homepage": "https://github.com/compose-ui/notification",
+  "browserify": {
+    "transform": [
+      "brfs"
+    ]
+  },
   "dependencies": {
     "bean": "^1.0.14",
+    "brfs": "^1.2.0",
     "classie": "^0.1.0",
     "compose-animevent": "^1.0.0",
     "compose-tetromino": "^1.0.0",
     "compose-wagon": "^1.0.1",
     "debug": "^1.0.4",
     "domify": "^1.3.0",
-    "lodash": "^2.4.1",
-    "multiline": "^0.3.4"
+    "lodash": "^2.4.1"
   },
   "devDependencies": {
     "browserify": "^4.2.0",
