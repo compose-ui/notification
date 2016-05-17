@@ -1,5 +1,21 @@
 # Changelog
 
+## 3.0.0
+
+- Removed runtime dependencies:
+  - classie
+  - brfs
+  - compose-animevent
+  - compose-tetromino
+  - compose-wagon
+  - lodash
+  - debug
+- Removed a few unused devDepedencies too.
+- Upgrade all dependencies to latest.
+- Simplified queue management.
+- Simplified message system.
+- All new tests.
+
 ## 2.0.4
 
 - `debug` was causing an issue with an empty message queue

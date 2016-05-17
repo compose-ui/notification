@@ -1,39 +1,44 @@
-var _ = require('lodash')
-var messages = require('./lib/message-collection')
-// var debug = require('debug')('notifications')
+// Support for Object.assign
+require('./lib/_object.assign')
+
+var Notifier = require('./lib/notifier')
 
 var defaultsByType = {
   error: { keep: true },
   normal: { dismissAfter: 2.5 },
   success: { dismissAfter: 2.5 },
-  action: { safeFor: 1, delay: 500 },
+  action: { safeFor: 1 },
 }
 
-module.exports = notify
-
 function notify(type, message){
+  // If no type is set, default to normal
   if (!message) {
     message = type
     type = 'normal'
   }
-
-  // Add an alias for old name.
+  
+  // Add an alias
   if (type == 'progress') {
     type = 'action'
   }
 
-  var options = _.isString(message)
-    ? {message: message, type: type}
-    : _.merge(message, {type: type})
-  
-  _.defaults(options, defaultsByType[type])
+  if (typeof message == 'string')
+    message = { message: message }
 
-  return messages.addMessage(options)
+  // Merge options and defaults
+  options = Object.assign({}, defaultsByType[type], message, {type: type})
+
+  return Notifier.addMessage(options)
 }
 
+// Add some helper functions for triggering message types
+//
 notify.normal = notify.bind(null, 'normal')
 notify.success = notify.bind(null, 'success')
 notify.error = notify.bind(null, 'error')
 notify.action = notify.bind(null, 'action')
 notify.progress = notify.bind(null, 'action')
-notify.clear = messages.clear.bind(messages)
+notify.clear = Notifier.clear
+notify.queue = Notifier.queue
+
+module.exports = notify
