@@ -70,7 +70,7 @@ describe('Notifier', function(){
       setTimeout(function() {
         assert.equal(notify.queue().length, 0)
         done()
-      }, remaining + 20)
+      }, remaining + 40)
     })
   })
 })
