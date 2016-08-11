@@ -1,7 +1,6 @@
 var assert = require('chai').assert
 
 var notify = require('../')
-var domify = require('domify')
 var event = require('compose-event')
 var $ = function(str) { return document.querySelector(str) }
 
