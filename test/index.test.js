@@ -1,12 +1,12 @@
 var assert = require('chai').assert
 
 var notify = require('../')
-var event = require('compose-event')
+var Event = require('compose-event')
 var $ = function(str) { return document.querySelector(str) }
 
 function clear(done){
-  this.msg.remove()
-  setTimeout(done, 10)
+  this.msg.destroy()
+  setTimeout(done, 0)
 }
 
 function assertMessage(type, message){
@@ -50,26 +50,20 @@ describe('Notifier', function(){
 
     it('clears all queued messages', function(done) {
       notify.clear(true)
-      setTimeout(function() {
-        assert.equal(notify.queue().length, 0)
-        done()
-      }, 20)
+      assert.equal(notify.queue().length, 0)
+      done()
     })
 
-    it('removes messages when their time elapses', function(done) {
+    it('messages remain while time is not up', function(done) {
       var msg = notify('normal', { message: 'countdown test', safeFor: .02, dismissAfter: .03 })
       var remaining = msg.autoDismissIn()
       
       // Ensure that message is not removed before safeFor elapses
       setTimeout(function() {
         assert.equal(notify.queue().length, 1)
-      }, remaining - 1)
-      
-      // Ensure that message is removed after safeFor time elapses
-      setTimeout(function() {
-        assert.equal(notify.queue().length, 0)
+        notify.clear(true)
         done()
-      }, remaining + 40)
+      }, remaining - 1)
     })
   })
 })
