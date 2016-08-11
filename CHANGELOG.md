@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.1
+
+- Fixed issue where event listeners would be removed too soon when multiple notifications were queued up.
+
 ## 3.0.0
 
 - Removed runtime dependencies:
