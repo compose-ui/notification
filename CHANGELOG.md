@@ -1,11 +1,12 @@
 # Changelog
 
-## 3.0.1
+## 3.0.2
+- Fixed an issue where dismiss animations weren't happening in Chrome.
 
+## 3.0.1
 - Fixed issue where event listeners would be removed too soon when multiple notifications were queued up.
 
 ## 3.0.0
-
 - Removed runtime dependencies:
   - classie
   - brfs
